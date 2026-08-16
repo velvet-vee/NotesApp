@@ -2,22 +2,19 @@
 
 package com.example.data.di
 
-import com.example.data.dao.NoteDao
 import com.example.data.repository.NoteRepositoryImpl
 import com.example.notesapp.domain.repository.NoteRepository
+import dagger.Binds
 import dagger.Module
-import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import jakarta.inject.Singleton
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object DataModule {
+abstract class DataModule {
 
-    @Provides
-    @Singleton
-    fun provideNoteRepository(noteDao: NoteDao): NoteRepository {
-        return NoteRepositoryImpl(noteDao = noteDao)
-    }
+    @Binds
+    @Singleton // когда кто-то просит интерфейс, то дай ему реализацию
+    abstract fun bindNoteRepository(implementation: NoteRepositoryImpl): NoteRepository
 }

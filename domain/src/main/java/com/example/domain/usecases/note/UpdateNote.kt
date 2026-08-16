@@ -2,9 +2,11 @@ package com.example.notesapp.domain.usecases.note
 
 import com.example.notesapp.domain.model.Note
 import com.example.notesapp.domain.repository.NoteRepository
+import javax.inject.Inject
 
-class UpdateNote(private val noteRepository: NoteRepository){
+class UpdateNote @Inject constructor(
+    private val noteRepository: NoteRepository){
     suspend fun execute(note: Note) {
-        return noteRepository.updateNote(note)
+        noteRepository.updateNote(note)
     }
 }

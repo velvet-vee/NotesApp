@@ -22,10 +22,15 @@ import androidx.compose.ui.unit.sp
 import com.example.notesapp.presentation.components.NoteList
 import com.example.notesapp.presentation.viewmodel.HomeNoteViewModel
 
+
 @Composable
 fun NotesHomeScreen(
-    viewModel: HomeNoteViewModel = hiltViewModel()
+    viewModel: HomeNoteViewModel = hiltViewModel(),
+    onCreateNote: () -> Unit,
+    onOpenNote: (Int) -> Unit
+
 ) {
+    val notes by viewModel.notes.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -36,17 +41,12 @@ fun NotesHomeScreen(
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextField(
-                value = "",
-                onValueChange = {},
-                label = { Text(text = "Введите текст...") },
+            Text(
+                text = "Мои заметки",
                 modifier = Modifier.weight(1f),
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedContainerColor = Color.White,
-                    unfocusedContainerColor = Color.Gray
-                )
+                fontSize = 24.sp
             )
-            IconButton(onClick = {}) {
+            IconButton(onClick = onCreateNote) {
                 Text(
                     text = "+",
                     fontSize = 24.sp
@@ -55,7 +55,12 @@ fun NotesHomeScreen(
         }
         Spacer(modifier = Modifier.height(5.dp))
         LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(6) { NoteList() }
+            items(notes) { note ->
+                NoteList(
+                    note = note,
+                    onClick = {onOpenNote(note.id)}
+                )
+            }
         }
     }
 }

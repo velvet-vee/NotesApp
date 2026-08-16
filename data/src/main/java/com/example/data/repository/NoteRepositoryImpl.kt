@@ -8,7 +8,7 @@ import com.example.notesapp.domain.model.Note
 import com.example.notesapp.domain.repository.NoteRepository
 import javax.inject.Inject
 
-class NoteRepositoryImpl @Inject constructor(
+class NoteRepositoryImpl @Inject constructor( // hilt узнаёт как создать
     private val noteDao: NoteDao
 ) : NoteRepository {
     override suspend fun updateNote (note: Note){
