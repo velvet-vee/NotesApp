@@ -1,6 +1,7 @@
 package com.example.notesapp.presentation.screens
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -11,14 +12,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.blur
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.notesapp.domain.model.Note
 import com.example.notesapp.presentation.viewmodel.NoteViewModel
-
 @Composable
 fun NoteScreen(
     viewModel: NoteViewModel = hiltViewModel(),
@@ -35,6 +34,7 @@ fun NoteScreen(
     var title by remember { mutableStateOf("") }
     var content by remember { mutableStateOf<String?>(null) }
     var titleError by remember { mutableStateOf(false) }
+    var wasFocused by remember { mutableStateOf(false) }
 
     LaunchedEffect(note) { // положиь в поля экрана ui те данные, которые в бд
         note?.let {
@@ -43,10 +43,10 @@ fun NoteScreen(
         }
     }
 
-    fun saveNote(): Boolean {
+    fun saveNote(){
         if (title.isBlank()) {
             titleError = true
-            return false
+            return
         }
         val currentNote = Note(
             id = noteId,
@@ -59,14 +59,13 @@ fun NoteScreen(
         else{
             viewModel.createNote(currentNote)
         }
-        onBack()
-        return true
     }
 
     Column {
         IconButton(
             onClick = {
                     saveNote()
+                    onBack()
                 }
         ) { Text(
             text = "<-",
@@ -76,25 +75,29 @@ fun NoteScreen(
             value = title,
             onValueChange = {
                 title = it
-                if(it.isNotBlank()){
-                    titleError = false
-                }
+                titleError = it.isBlank()
             },
             isError = titleError,
-            label = {
-                Text(
-                    text = if (titleError) "Введите название" else "Введите название"
-                )
+            label = if (titleError){
+                {Text("Название не может отсутствовать")}
+                    } else null,
+            placeholder = {
+                Text("")
             },
-            modifier = Modifier.onFocusChanged {focusState ->
-                if (!focusState.isFocused && title.isBlank()){
-                    titleError = true
-                }
-            },
+            modifier = Modifier.fillMaxWidth()
         )
         TextField(
             value = content?: "",
-            onValueChange = {content = it}
+            onValueChange = {content = it},
+            modifier = Modifier
+                .fillMaxWidth()
+                .onFocusChanged {
+                    if (wasFocused && !it.isFocused){
+                        println("сохранение")
+                        saveNote()
+                    }
+                    wasFocused = it.isFocused
+                }
         )
     }
 }

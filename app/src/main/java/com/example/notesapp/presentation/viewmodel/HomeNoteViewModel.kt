@@ -15,14 +15,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class HomeNoteViewModel @Inject constructor(
-    private val updateNote: UpdateNote,
     private val getAllNotes: GetAllNotes
 ): ViewModel() {
     val notes = getAllNotes.execute()
-
-    fun updateNote(note: Note) {
-        viewModelScope.launch {
-            updateNote.execute(note)
-        }
-    }
 }
