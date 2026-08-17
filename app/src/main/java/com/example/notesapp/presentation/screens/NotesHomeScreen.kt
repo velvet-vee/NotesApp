@@ -20,6 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.notesapp.domain.model.Note
 import com.example.notesapp.presentation.components.NoteList
 import com.example.notesapp.presentation.viewmodel.HomeNoteViewModel
 
@@ -30,7 +31,7 @@ fun NotesHomeScreen(
     onCreateNote: () -> Unit,
     onOpenNote: (Int) -> Unit,
 
-) {
+    ) {
     val notes by viewModel.notes.collectAsStateWithLifecycle(initialValue = emptyList())
     Column(
         modifier = Modifier

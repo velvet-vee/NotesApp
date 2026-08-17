@@ -19,7 +19,7 @@ fun AppNavigation(
         composable<NotesHomeRoute> {
             NotesHomeScreen(
                 onCreateNote = {
-                    navController.navigate(NoteRoute)
+                    navController.navigate(NoteRoute())
                 },
                 onOpenNote = {noteId ->
                     navController.navigate(NoteRoute(noteId = noteId))
