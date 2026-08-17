@@ -10,7 +10,7 @@ import com.example.notesapp.domain.model.Note
 data class NoteEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int? = null,
-    val title: String?,
+    val title: String,
     val content: String?
 )
 fun Note.toEntity(): NoteEntity {
@@ -18,5 +18,12 @@ fun Note.toEntity(): NoteEntity {
         id = this.id,       // id из доменной Note переходит в NoteEntity
         title = this.title,
         content = this.content
+    )
+}
+fun NoteEntity.toDomain(): Note {
+    return Note(
+        id = id?:0,
+        title = title,
+        content = content
     )
 }

@@ -1,6 +1,5 @@
 package com.example.notesapp.presentation.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,11 +12,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.notesapp.domain.model.Note
 
 @Composable
-fun NoteList() {
+fun NoteList(
+    note: Note,
+    onClick: () -> Unit
+) {
     Card(
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(5.dp)
@@ -26,7 +29,7 @@ fun NoteList() {
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ){
-            Text("Test 1")
+            Text(note.title)
             Spacer(modifier = Modifier.weight(1f))
             IconButton(onClick = {}){
                 Text(
