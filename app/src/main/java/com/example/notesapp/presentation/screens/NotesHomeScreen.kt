@@ -17,12 +17,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Devices
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.notesapp.domain.model.Note
 import com.example.notesapp.presentation.components.NoteList
 import com.example.notesapp.presentation.viewmodel.HomeNoteViewModel
+import kotlinx.coroutines.flow.Flow
 
 
 @Composable
@@ -30,9 +33,23 @@ fun NotesHomeScreen(
     viewModel: HomeNoteViewModel = hiltViewModel(),
     onCreateNote: () -> Unit,
     onOpenNote: (Int) -> Unit,
-
     ) {
     val notes by viewModel.notes.collectAsStateWithLifecycle(initialValue = emptyList())
+
+    NotesHomeContent(
+        notes = notes,
+        onCreateNote = onCreateNote,
+        onOpenNote = onOpenNote
+    )
+}
+
+@Composable
+fun NotesHomeContent(
+    notes: List<Note>,
+    onCreateNote: () -> Unit,
+    onOpenNote: (Int) -> Unit
+) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -60,6 +77,7 @@ fun NotesHomeScreen(
             items(notes) { note ->
                 NoteList(
                     note = note,
+                    tag = note.tag,
                     onClick = {
                         note.id?.let { id ->
                             onOpenNote(id)
@@ -69,4 +87,19 @@ fun NotesHomeScreen(
             }
         }
     }
+}
+
+@Preview(showBackground = true, showSystemUi = true, device = Devices.PIXEL_4)
+@Composable
+fun NotesHomePreview(){
+    val testNotes = listOf(
+        Note(id = 1, title = "Купить продукты", content = "Молоко, хлеб, сыр", tag = null),
+        Note(id = 2, title = "Идеи для Compose", content = "Разобраться с превью и лямбдами", tag = null),
+        Note(id = 3, title = "Важное напоминание", content = "Полить цветы вечером", tag = null)
+    )
+    NotesHomeContent(
+        notes = testNotes,
+        onCreateNote = { },
+        onOpenNote = { }
+    )
 }

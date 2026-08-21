@@ -3,8 +3,8 @@
 package com.example.data.repository
 
 import com.example.data.dao.NoteDao
-import com.example.data.entity.toDomain
-import com.example.data.entity.toEntity
+import com.example.data.mapper.toDomain
+import com.example.data.mapper.toEntity
 import com.example.notesapp.domain.model.Note
 import com.example.notesapp.domain.repository.NoteRepository
 import kotlinx.coroutines.flow.Flow

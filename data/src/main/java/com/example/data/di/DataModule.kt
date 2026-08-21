@@ -3,6 +3,8 @@
 package com.example.data.di
 
 import com.example.data.repository.NoteRepositoryImpl
+import com.example.data.repository.TagRepositoryImpl
+import com.example.domain.repository.TagRepository
 import com.example.notesapp.domain.repository.NoteRepository
 import dagger.Binds
 import dagger.Module
@@ -15,6 +17,9 @@ import javax.inject.Singleton
 abstract class DataModule {
 
     @Binds
-    @Singleton // когда кто-то просит интерфейс, то дай ему реализацию
+    @Singleton // связывание собственного интерфейса с собственным классом-реализацией
     abstract fun bindNoteRepository(implementation: NoteRepositoryImpl): NoteRepository
+    @Binds
+    @Singleton // связывание собственного интерфейса с собственным классом-реализацией
+    abstract fun bindTagRepository(implementation: TagRepositoryImpl): TagRepository
 }
