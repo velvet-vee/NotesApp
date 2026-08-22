@@ -3,6 +3,7 @@ package com.example.data.repository
 import com.example.data.dao.TagDao
 import com.example.data.mapper.toDomain
 import com.example.data.mapper.toEntity
+import com.example.data.mapper.toTagDomain
 import com.example.domain.model.Tag
 import com.example.domain.repository.TagRepository
 import com.example.notesapp.domain.model.Note
@@ -22,7 +23,7 @@ class TagRepositoryImpl @Inject constructor(
     override fun getNotesByTag(tagId: Int): Flow<List<Note>> {
         return tagDao.getNotesByTag(tagId)
             .map { entities ->
-                entities.map { it.toDomain() }
+                entities.map { it.toTagDomain() }
             }
     }
 }

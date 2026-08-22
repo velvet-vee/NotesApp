@@ -7,9 +7,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.Composable
@@ -49,46 +56,54 @@ fun NotesHomeContent(
     onCreateNote: () -> Unit,
     onOpenNote: (Int) -> Unit
 ) {
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = "Мои заметки",
-                modifier = Modifier.weight(1f),
-                fontSize = 24.sp
-            )
-            IconButton(onClick = onCreateNote) {
-                Text(
-                    text = "+",
-                    fontSize = 24.sp
+    Scaffold(
+        // 1. Настраиваем плавающую кнопку
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = onCreateNote,
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = "Добавить заметку"
                 )
             }
         }
-        Spacer(modifier = Modifier.height(5.dp))
-        LazyColumn(modifier = Modifier.fillMaxWidth()) {
-            items(notes) { note ->
-                NoteList(
-                    note = note,
-                    tag = note.tag,
-                    onClick = {
-                        note.id?.let { id ->
-                            onOpenNote(id)
-                        }
-                    }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.White)
+                .padding(innerPadding)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = "Мои заметки",
+                    modifier = Modifier
+                        .weight(1f),
+                    fontSize = 24.sp
                 )
+            }
+            Spacer(modifier = Modifier.height(5.dp))
+            LazyColumn(modifier = Modifier.fillMaxWidth()) {
+                items(notes) { note ->
+                    NoteList(
+                        note = note,
+                        tag = note.tag,
+                        onClick = {
+                            note.id?.let { id ->
+                                onOpenNote(id)
+                            }
+                        }
+                    )
+                }
             }
         }
     }
 }
-
 @Preview(showBackground = true, showSystemUi = true, device = Devices.PIXEL_4)
 @Composable
 fun NotesHomePreview(){

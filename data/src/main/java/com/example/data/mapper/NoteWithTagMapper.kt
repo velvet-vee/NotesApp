@@ -13,7 +13,7 @@ fun NoteWithTag.toEntity(): NoteEntity  {
         noteTagId  = tag?.tagId
     )
 }
-fun NoteWithTag.toDomain(): Note {
+fun NoteWithTag.toTagDomain(): Note {
     return Note(
         id = note.id,
         title = note.title,
